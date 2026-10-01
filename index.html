@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OXP Code // Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{border-radius:0px !important;box-sizing:border-box;margin:0;padding:0;font-family:'JetBrains Mono',monospace;transition:all .15s ease}
+:root{--bg:#0d0d0d;--card:#141414;--line:#262626;--line2:#333333;--fg:#f0f0f0;--mute:#888888}
+html{scroll-behavior:smooth}
+body{background-color:var(--bg);background-image:radial-gradient(#2c2c2c 1px,transparent 1px);background-size:20px 20px;color:var(--fg);font-size:14px;line-height:1.65}
+::selection{background:var(--fg);color:var(--bg)}
+a{color:var(--fg)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+.mute{color:var(--mute)}
+.tag{color:var(--mute);font-size:12px;white-space:nowrap}
+.led{display:inline-block;width:8px;height:8px;background:var(--fg);margin-right:6px;animation:blink 1.4s steps(2,jump-none) infinite}
+@keyframes blink{0%{opacity:1}50%{opacity:.15}100%{opacity:1}}
+@keyframes flick{50%{opacity:.35}}
+header{position:sticky;top:0;z-index:10;background:rgba(13,13,13,.94);border-bottom:1px solid var(--line2)}
+header .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;padding-top:12px;padding-bottom:12px}
+.logo{font-weight:700;letter-spacing:3px;font-size:18px;text-decoration:none}
+.hd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px}
+#clock{font-weight:500;letter-spacing:2px;border:1px solid var(--line2);padding:2px 10px;background:var(--card)}
+.lang{background:none;border:1px solid var(--line2);color:var(--mute);font-size:12px;padding:2px 10px;cursor:pointer}
+.lang:hover{border-color:var(--fg);color:var(--fg)}
+.frame{position:relative;background:var(--card);border:1px solid var(--line)}
+.c{position:absolute;line-height:1;font-size:15px;color:var(--fg);font-weight:400}
+.tl{top:-9px;left:-5px}.tr{top:-9px;right:-5px}.bl{bottom:-9px;left:-5px}.br{bottom:-9px;right:-5px}
+.btn{display:inline-block;border:1px solid var(--fg);background:transparent;color:var(--fg);padding:12px 20px;cursor:pointer;font-size:13px;letter-spacing:1px;text-decoration:none}
+.btn:hover{background:var(--fg);color:var(--bg);animation:flick .3s steps(2) 2}
+.btn.alt{border-color:var(--line2);color:var(--mute)}
+.btn.alt:hover{border-color:var(--fg);color:var(--fg);background:transparent}
+section{padding:72px 0;border-top:1px dashed var(--line2)}
+h2{font-size:20px;font-weight:700;margin-bottom:6px}
+.sub{color:var(--mute);margin-bottom:32px;max-width:62ch}
+.hero{padding:80px 0 64px;border-top:0}
+.hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+h1{font-size:clamp(26px,4.4vw,46px);line-height:1.15;font-weight:700;letter-spacing:-1px;margin:14px 0 20px}
+.cur{display:inline-block;width:.55em;height:.9em;background:var(--fg);vertical-align:-.1em;margin-left:6px;animation:blink 1s steps(2,jump-none) infinite}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.mx-wrap{padding:22px}
+.mx{display:grid;gap:4px}
+.mx i{display:block;aspect-ratio:1;background:#1c1c1c}
+.mx i.on{background:var(--fg)}
+.cap{display:flex;justify-content:space-between;gap:8px;margin-top:16px;font-size:11px;color:var(--mute)}
+.pgrid{display:grid;grid-template-columns:1fr 1.3fr;gap:32px}
+.cells{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}
+.cell{background:var(--card);border:1px solid var(--line2);color:var(--fg);text-align:left;padding:16px;cursor:pointer;font-size:13px}
+.cell small{display:block;color:var(--mute);font-size:11px;margin-bottom:4px}
+.cell:hover{border-color:var(--fg);animation:flick .3s steps(2) 1}
+.cell.act{background:var(--fg);color:var(--bg)}
+.cell.act small{color:#555}
+.detail{padding:24px;min-height:300px}
+.detail h3{font-size:15px;margin-bottom:14px}
+.row{display:flex;justify-content:space-between;gap:16px;border-bottom:1px dotted var(--line2);padding:6px 0;font-size:13px}
+.row span:first-child{color:var(--mute)}
+.row span:last-child{text-align:right}
+pre.art{color:var(--mute);font-size:11px;line-height:1.25;margin-top:20px;overflow-x:auto}
+.term{padding:0}
+.tbar{display:flex;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--line2);font-size:12px;color:var(--mute)}
+#out{height:300px;overflow-y:auto;padding:14px;white-space:pre-wrap;word-break:break-word;font-size:13px;cursor:text}
+#out .cmd{color:var(--mute)}
+.prompt{display:flex;gap:8px;padding:0 14px 14px;font-size:13px}
+#inp{flex:1;background:transparent;border:0;outline:0;color:var(--fg);font-size:13px;caret-color:var(--fg)}
+.prompt:focus-within{background:#181818}
+footer{border-top:1px solid var(--line2);padding:40px 0 56px;background:var(--bg)}
+.fgrid{display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px}
+.soc{display:flex;flex-direction:column;gap:6px}
+.soc a{text-decoration:none;border-bottom:1px dashed var(--line2);padding:2px 0;width:max-content}
+.soc a:hover{background:var(--fg);color:var(--bg);animation:flick .3s steps(2) 2}
+.cnt{padding:14px;width:230px}
+:focus-visible{outline:1px dashed var(--fg);outline-offset:3px}
+@media(max-width:800px){.hero-grid,.pgrid{grid-template-columns:1fr}.hero{padding-top:48px}}
+@media(prefers-reduced-motion:reduce){*{animation:none !important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top">⊙xP CODE</a>
+    <div class="hd">
+      <span class="tag"><span class="led"></span>[ STATUS: ONLINE ]</span>
+      <span class="tag">[ BUILD: v1.0.4 ]</span>
+      <span id="clock">00:00:00</span>
+      <button class="lang" id="lang" aria-label="Cambiar idioma">[ LANG: ES ]</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="tag">┌─ oxp.code/intranet ─┐</span>
+      <h1>OXP Code Systems // Next-Gen Open Hardware &amp; Mobile Architecture<span class="cur"></span></h1>
+      <p class="mute" style="max-width:56ch" data-en="Open schematics, open firmware and a chassis you can see through. Hardware built to be opened, read and repaired.">Esquemas abiertos, firmware abierto y un chasis a través del cual se ve todo. Hardware hecho para abrirse, leerse y repararse.</p>
+      <div class="btns">
+        <a class="btn" href="#producto" data-en="[ VIEW SPECS ]">[ VER FICHA TÉCNICA ]</a>
+        <a class="btn alt" href="#terminal" data-en="[ OPEN TERMINAL ]">[ ABRIR TERMINAL ]</a>
+      </div>
+    </div>
+    <div class="frame mx-wrap">
+      <div class="mx" id="mx1" role="img" aria-label="Matriz LED mostrando OXP CODE"></div>
+      <div class="cap"><span>/dev/oxpled0</span><span>24×5 px · 7 fps</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="producto">
+  <div class="wrap">
+    <h2>oxp_notebook(1)</h2>
+    <p class="sub" data-en="Select a module to read its datasheet.">Selecciona un módulo para leer su hoja de datos.</p>
+    <div class="pgrid">
+      <div class="cells" id="cells"></div>
+      <div class="frame detail" id="detail"></div>
+    </div>
+  </div>
+</section>
+
+<section id="terminal">
+  <div class="wrap">
+    <h2 data-en="Intranet terminal">Terminal de intranet</h2>
+    <p class="sub" data-en="Type help to list commands. Arrow up repeats the last one.">Escribe help para ver los comandos. La flecha arriba repite el anterior.</p>
+    <div class="frame term">
+      <div class="tbar"><span>oxp@code:~</span><span><span class="led"></span>tty0</span></div>
+      <div id="out" aria-live="polite"></div>
+      <label class="prompt"><span class="mute">oxp@code:~$</span><input id="inp" autocomplete="off" spellcheck="false" aria-label="Comando"></label>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap fgrid">
+    <div>
+      <div class="logo">⊙xP CODE</div>
+      <p class="tag" style="margin-top:6px">- - - - - - - - - - - - - -</p>
+      <p class="tag">© 2026 OXP Code Systems</p>
+    </div>
+    <div class="soc">
+      <span class="tag">// red</span>
+      <a href="https://github.com/" target="_blank" rel="noopener">github.com/oxpcode</a>
+      <a href="https://instagram.com/" target="_blank" rel="noopener">instagram.com/oxpcode</a>
+    </div>
+    <div>
+      <span class="tag" data-en="// visits">// visitas</span>
+      <div class="frame cnt" style="margin-top:8px"><div class="mx" id="mx2" role="img" aria-label="Contador de visitas"></div></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Marcas de encuadre ┌ ┐ └ ┘ en cada .frame
+document.querySelectorAll('.frame').forEach(f=>{
+  [['tl','┌'],['tr','┐'],['bl','└'],['br','┘']].forEach(([k,ch])=>{
+    const b=document.createElement('b');b.className='c '+k;b.textContent=ch;b.setAttribute('aria-hidden','true');f.appendChild(b);
+  });
+});
+
+// Reloj
+const clock=document.getElementById('clock');
+const tick=()=>clock.textContent=new Date().toTimeString().slice(0,8);
+tick();setInterval(tick,1000);
+
+// Idioma (hero, botones y títulos)
+let lang='es';
+document.getElementById('lang').onclick=e=>{
+  lang=lang==='es'?'en':'es';
+  e.target.textContent='[ LANG: '+lang.toUpperCase()+' ]';
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-en]').forEach(el=>{
+    if(!el.dataset.es)el.dataset.es=el.textContent;
+    el.textContent=lang==='en'?el.dataset.en:el.dataset.es;
+  });
+};
+
+// Matriz LED: fuente 3x5
+const F={'0':'111101101101111','1':'010110010010111','2':'111001111100111','3':'111001111001111','4':'101101111001001','5':'111100111001111','6':'111100111101111','7':'111001001001001','8':'111101111101111','9':'111101111001111','O':'111101101101111','X':'101101010101101','P':'111101111100100','C':'111100100100111','D':'110101101101110','E':'111100111100111',' ':'000000000000000'};
+const glyph=t=>{const cols=[];for(const ch of t){const g=F[ch]||F[' '];for(let c=0;c<3;c++)cols.push([0,1,2,3,4].map(r=>g[r*3+c]==='1'));cols.push([0,0,0,0,0].map(()=>false));}return cols;};
+function matrix(el,n){
+  el.style.gridTemplateColumns='repeat('+n+',1fr)';
+  const cells=[];for(let i=0;i<n*5;i++){const c=document.createElement('i');el.appendChild(c);cells.push(c);}
+  return (cols,off)=>{for(let x=0;x<n;x++){const col=cols[(off+x)%cols.length];for(let r=0;r<5;r++)cells[r*n+x].classList.toggle('on',col[r]);}};
+}
+const draw1=matrix(document.getElementById('mx1'),24);
+const msg=glyph('   OXP CODE   ');let off=0;
+draw1(msg,0);setInterval(()=>draw1(msg,off=(off+1)%msg.length),140);
+
+// Contador de visitas (localStorage con try/catch)
+let visits=1;
+try{visits=(parseInt(localStorage.getItem('oxp_visits'))||0)+1;localStorage.setItem('oxp_visits',visits);}catch(e){}
+const draw2=matrix(document.getElementById('mx2'),23);
+draw2(glyph(String(visits).padStart(6,'0')),0);
+
+// Ficha técnica interactiva
+const S={
+  arch:{k:'ARQUITECTURA',v:'OXP-A8 · ARM64',t:'Arquitectura',r:[['SoC','OXP-A8 octa-core ARM64'],['Reloj','hasta 2.8 GHz'],['RAM','16 GB LPDDR5'],['Almacenamiento','512 GB NVMe M.2'],['Firmware','coreboot + UEFI abierto']]},
+  os:{k:'SISTEMAS',v:'Linux / FreeBSD',t:'Compatibilidad Linux / FreeBSD',r:[['Linux','kernel 6.x · Debian, Arch, Alpine'],['FreeBSD','14.x · ZFS de serie'],['Drivers','upstream, sin blobs propietarios'],['Arranque','secure boot con tus propias claves']]},
+  case:{k:'CHASIS',v:'PMMA transparente',t:'Chasis de metacrilato',r:[['Material','PMMA transparente · 4 mm'],['Tornillería','Torx T5, sin pegamento'],['Peso','1.18 kg'],['Reparación','placa base visible y modular']]},
+  led:{k:'MATRIZ LED',v:'24×8 monocroma',t:'Matriz LED trasera',r:[['Resolución','24×8 píxeles'],['Dispositivo','/dev/oxpled0'],['API','escribe un bitmap, se dibuja'],['Usos','batería, red, notificaciones']]}
+};
+const art='  ┌────────────────────────────┐\n  │ ▒▒▒▒▒▒▒  OXP-A8  ▒▒▒▒▒▒▒▒ │\n  │ ░░░░░░░░░░░░░░░░░░░░░░░░░ │\n  │ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ │\n  └────────────────────────────┘\n ╚══════════════════════════════╝';
+const cells=document.getElementById('cells'),detail=document.getElementById('detail');
+function show(id){
+  const s=S[id];
+  cells.querySelectorAll('.cell').forEach(b=>b.classList.toggle('act',b.dataset.id===id));
+  detail.querySelectorAll('.dyn').forEach(n=>n.remove());
+  const w=document.createElement('div');w.className='dyn';
+  w.innerHTML='<h3></h3>'+s.r.map(()=>'<div class="row"><span></span><span></span></div>').join('')+'<pre class="art"></pre>';
+  w.querySelector('h3').textContent='> '+s.t;
+  w.querySelectorAll('.row').forEach((row,i)=>{row.children[0].textContent=s.r[i][0];row.children[1].textContent=s.r[i][1];});
+  w.querySelector('pre').textContent=art;
+  detail.appendChild(w);
+}
+Object.keys(S).forEach(id=>{
+  const b=document.createElement('button');b.className='cell';b.dataset.id=id;
+  const sm=document.createElement('small');sm.textContent=S[id].k;
+  b.append(sm,S[id].v);b.onclick=()=>show(id);cells.appendChild(b);
+});
+show('arch');
+
+// Terminal
+const out=document.getElementById('out'),inp=document.getElementById('inp');
+const hist=[];let hi=0;
+const say=(t,c)=>{const d=document.createElement('div');if(c)d.className=c;d.textContent=t;out.appendChild(d);out.scrollTop=out.scrollHeight;};
+const CMD={
+  help:()=>'Comandos disponibles:\n  help      lista de comandos\n  specs     resumen de oxp_notebook(1)\n  about     sobre OXP Code\n  whoami    usuario actual\n  date      fecha y hora\n  version   versión del sistema\n  clear     limpia la pantalla',
+  specs:()=>'oxp_notebook(1)\n  SoC .......... OXP-A8 octa-core ARM64\n  RAM .......... 16 GB LPDDR5\n  Disco ........ 512 GB NVMe\n  SO ........... Linux / FreeBSD\n  Chasis ....... PMMA transparente 4 mm\n  Matriz LED ... 24×8 monocroma',
+  about:()=>'OXP Code Systems diseña hardware abierto y arquitectura móvil.\nEsquemas, firmware y drivers son públicos. Si no puedes abrirlo, no es tuyo.',
+  whoami:()=>'guest@oxp-intranet (acceso de solo lectura)',
+  date:()=>new Date().toString(),
+  version:()=>'OXP Intranet v1.0.4 · build estable',
+  clear:()=>{out.textContent='';return null;}
+};
+function run(raw){
+  const c=raw.trim().toLowerCase();
+  say('oxp@code:~$ '+raw,'cmd');
+  if(!c)return;
+  hist.push(raw);hi=hist.length;
+  if(CMD[c]){const r=CMD[c]();if(r)say(r);}
+  else say('comando no encontrado: '+c+'. Escribe help para ver la lista.');
+}
+inp.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){run(inp.value);inp.value='';}
+  else if(e.key==='ArrowUp'&&hist.length){hi=Math.max(0,hi-1);inp.value=hist[hi];e.preventDefault();}
+  else if(e.key==='ArrowDown'&&hist.length){hi=Math.min(hist.length,hi+1);inp.value=hist[hi]||'';e.preventDefault();}
+});
+out.onclick=()=>inp.focus();
+say('OXP Intranet v1.0.4 — sesión iniciada.\nEscribe help para empezar.');
+</script>
+</body>
+</html>
