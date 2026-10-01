@@ -2,7 +2,7 @@
 
 ┌─────────────────────────────────────────────────────────┐
 
-│  ⊙xP CODE SYSTEMS CORP. // INTRANET ARCHITECTURE NODE   │
+│  ⊙xP CODE SYSTEMS CORP. // INTRANET ARCHITECTURE NODE       │
 
 └─────────────────────────────────────────────────────────┘
 
