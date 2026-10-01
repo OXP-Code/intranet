@@ -155,13 +155,11 @@ footer{border-top:1px solid var(--line2);padding:40px 0 56px;background:var(--bg
 </footer>
 
 <script>
-
 document.querySelectorAll('.frame').forEach(f=>{
   [['tl','┌'],['tr','┐'],['bl','└'],['br','┘']].forEach(([k,ch])=>{
     const b=document.createElement('b');b.className='c '+k;b.textContent=ch;b.setAttribute('aria-hidden','true');f.appendChild(b);
   });
 });
-
 
 const clock=document.getElementById('clock');
 const tick=()=>clock.textContent=new Date().toTimeString().slice(0,8);
@@ -179,7 +177,6 @@ function setLang(l){
   onLang.forEach(f=>f());
 }
 document.getElementById('lang').onclick=()=>setLang(lang==='es'?'en':'es');
-
 
 const F={'0':'111101101101111','1':'010110010010111','2':'111001111100111','3':'111001111001111','4':'101101111001001','5':'111100111001111','6':'111100111101111','7':'111001001001001','8':'111101111101111','9':'111101111001111','O':'111101101101111','X':'101101010101101','P':'111101111100100','C':'111100100100111','D':'110101101101110','E':'111100111100111',' ':'000000000000000'};
 const glyph=t=>{const cols=[];for(const ch of t){const g=F[ch]||F[' '];for(let c=0;c<3;c++)cols.push([0,1,2,3,4].map(r=>g[r*3+c]==='1'));cols.push([0,0,0,0,0].map(()=>false));}return cols;};
