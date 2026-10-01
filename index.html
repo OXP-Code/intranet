@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -87,7 +87,7 @@ footer{border-top:1px solid var(--line2);padding:40px 0 56px;background:var(--bg
       <span class="tag"><span class="led"></span>[ STATUS: ONLINE ]</span>
       <span class="tag">[ BUILD: v1.0.4 ]</span>
       <span id="clock">00:00:00</span>
-      <button class="lang" id="lang" aria-label="Cambiar idioma">[ LANG: ES ]</button>
+      <button class="lang" id="lang" aria-label="Cambiar idioma">[ LANG: EN ]</button>
     </div>
   </div>
 </header>
@@ -143,9 +143,9 @@ footer{border-top:1px solid var(--line2);padding:40px 0 56px;background:var(--bg
       <p class="tag">© 2026 OXP Code Systems</p>
     </div>
     <div class="soc">
-      <span class="tag">// red</span>
-      <a href="https://github.com/" target="_blank" rel="noopener">github.com/oxpcode</a>
-      <a href="https://instagram.com/" target="_blank" rel="noopener">instagram.com/oxpcode</a>
+      <span class="tag" data-en="// social">// red</span>
+      <a href="https://github.com/OXP-Code" target="_blank" rel="noopener">oxpcode // github</a>
+      <a href="https://www.instagram.com/oxp_code/" target="_blank" rel="noopeneroxpcode // instagram</a>
     </div>
     <div>
       <span class="tag" data-en="// visits">// visitas</span>
@@ -155,31 +155,32 @@ footer{border-top:1px solid var(--line2);padding:40px 0 56px;background:var(--bg
 </footer>
 
 <script>
-// Marcas de encuadre ┌ ┐ └ ┘ en cada .frame
+
 document.querySelectorAll('.frame').forEach(f=>{
   [['tl','┌'],['tr','┐'],['bl','└'],['br','┘']].forEach(([k,ch])=>{
     const b=document.createElement('b');b.className='c '+k;b.textContent=ch;b.setAttribute('aria-hidden','true');f.appendChild(b);
   });
 });
 
-// Reloj
+
 const clock=document.getElementById('clock');
 const tick=()=>clock.textContent=new Date().toTimeString().slice(0,8);
 tick();setInterval(tick,1000);
 
-// Idioma (hero, botones y títulos)
-let lang='es';
-document.getElementById('lang').onclick=e=>{
-  lang=lang==='es'?'en':'es';
-  e.target.textContent='[ LANG: '+lang.toUpperCase()+' ]';
-  document.documentElement.lang=lang;
+let lang='en';const onLang=[];
+const L=(en,es)=>lang==='en'?en:es;
+function setLang(l){
+  lang=l;document.documentElement.lang=l;
+  document.getElementById('lang').textContent='[ LANG: '+l.toUpperCase()+' ]';
   document.querySelectorAll('[data-en]').forEach(el=>{
     if(!el.dataset.es)el.dataset.es=el.textContent;
-    el.textContent=lang==='en'?el.dataset.en:el.dataset.es;
+    el.textContent=l==='en'?el.dataset.en:el.dataset.es;
   });
-};
+  onLang.forEach(f=>f());
+}
+document.getElementById('lang').onclick=()=>setLang(lang==='es'?'en':'es');
 
-// Matriz LED: fuente 3x5
+
 const F={'0':'111101101101111','1':'010110010010111','2':'111001111100111','3':'111001111001111','4':'101101111001001','5':'111100111001111','6':'111100111101111','7':'111001001001001','8':'111101111101111','9':'111101111001111','O':'111101101101111','X':'101101010101101','P':'111101111100100','C':'111100100100111','D':'110101101101110','E':'111100111100111',' ':'000000000000000'};
 const glyph=t=>{const cols=[];for(const ch of t){const g=F[ch]||F[' '];for(let c=0;c<3;c++)cols.push([0,1,2,3,4].map(r=>g[r*3+c]==='1'));cols.push([0,0,0,0,0].map(()=>false));}return cols;};
 function matrix(el,n){
@@ -191,50 +192,55 @@ const draw1=matrix(document.getElementById('mx1'),24);
 const msg=glyph('   OXP CODE   ');let off=0;
 draw1(msg,0);setInterval(()=>draw1(msg,off=(off+1)%msg.length),140);
 
-// Contador de visitas (localStorage con try/catch)
 let visits=1;
 try{visits=(parseInt(localStorage.getItem('oxp_visits'))||0)+1;localStorage.setItem('oxp_visits',visits);}catch(e){}
 const draw2=matrix(document.getElementById('mx2'),23);
 draw2(glyph(String(visits).padStart(6,'0')),0);
 
-// Ficha técnica interactiva
+const ES={'ARCHITECTURE':'ARQUITECTURA','Architecture':'Arquitectura','Clock':'Reloj','up to 2.8 GHz':'hasta 2.8 GHz','Storage':'Almacenamiento','open coreboot + UEFI':'coreboot + UEFI abierto','SYSTEMS':'SISTEMAS','Linux / FreeBSD compatibility':'Compatibilidad Linux / FreeBSD','14.x · ZFS out of the box':'14.x · ZFS de serie','upstream, no proprietary blobs':'upstream, sin blobs propietarios','Boot':'Arranque','secure boot with your own keys':'secure boot con tus propias claves','CHASSIS':'CHASIS','Clear PMMA':'PMMA transparente','Acrylic chassis':'Chasis de metacrilato','Material':'Material','clear PMMA · 4 mm':'PMMA transparente · 4 mm','Screws':'Tornillería','Torx T5, no glue':'Torx T5, sin pegamento','Weight':'Peso','Repair':'Reparación','visible, modular mainboard':'placa base visible y modular','LED MATRIX':'MATRIZ LED','24×8 monochrome':'24×8 monocroma','Rear LED matrix':'Matriz LED trasera','Resolution':'Resolución','24×8 pixels':'24×8 píxeles','Device':'Dispositivo','write a bitmap, it draws':'escribe un bitmap y se dibuja','Uses':'Usos','battery, network, notifications':'batería, red, notificaciones'};
+const tr=x=>lang==='es'&&ES[x]||x;
 const S={
-  arch:{k:'ARQUITECTURA',v:'OXP-A8 · ARM64',t:'Arquitectura',r:[['SoC','OXP-A8 octa-core ARM64'],['Reloj','hasta 2.8 GHz'],['RAM','16 GB LPDDR5'],['Almacenamiento','512 GB NVMe M.2'],['Firmware','coreboot + UEFI abierto']]},
-  os:{k:'SISTEMAS',v:'Linux / FreeBSD',t:'Compatibilidad Linux / FreeBSD',r:[['Linux','kernel 6.x · Debian, Arch, Alpine'],['FreeBSD','14.x · ZFS de serie'],['Drivers','upstream, sin blobs propietarios'],['Arranque','secure boot con tus propias claves']]},
-  case:{k:'CHASIS',v:'PMMA transparente',t:'Chasis de metacrilato',r:[['Material','PMMA transparente · 4 mm'],['Tornillería','Torx T5, sin pegamento'],['Peso','1.18 kg'],['Reparación','placa base visible y modular']]},
-  led:{k:'MATRIZ LED',v:'24×8 monocroma',t:'Matriz LED trasera',r:[['Resolución','24×8 píxeles'],['Dispositivo','/dev/oxpled0'],['API','escribe un bitmap, se dibuja'],['Usos','batería, red, notificaciones']]}
+  arch:{k:'ARCHITECTURE',v:'OXP-A8 · ARM64',t:'Architecture',r:[['SoC','OXP-A8 octa-core ARM64'],['Clock','up to 2.8 GHz'],['RAM','16 GB LPDDR5'],['Storage','512 GB NVMe M.2'],['Firmware','open coreboot + UEFI']]},
+  os:{k:'SYSTEMS',v:'Linux / FreeBSD',t:'Linux / FreeBSD compatibility',r:[['Linux','kernel 6.x · Debian, Arch, Alpine'],['FreeBSD','14.x · ZFS out of the box'],['Drivers','upstream, no proprietary blobs'],['Boot','secure boot with your own keys']]},
+  case:{k:'CHASSIS',v:'Clear PMMA',t:'Acrylic chassis',r:[['Material','clear PMMA · 4 mm'],['Screws','Torx T5, no glue'],['Weight','1.18 kg'],['Repair','visible, modular mainboard']]},
+  led:{k:'LED MATRIX',v:'24×8 monochrome',t:'Rear LED matrix',r:[['Resolution','24×8 pixels'],['Device','/dev/oxpled0'],['API','write a bitmap, it draws'],['Uses','battery, network, notifications']]}
 };
 const art='  ┌────────────────────────────┐\n  │ ▒▒▒▒▒▒▒  OXP-A8  ▒▒▒▒▒▒▒▒ │\n  │ ░░░░░░░░░░░░░░░░░░░░░░░░░ │\n  │ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ │\n  └────────────────────────────┘\n ╚══════════════════════════════╝';
 const cells=document.getElementById('cells'),detail=document.getElementById('detail');
-function show(id){
-  const s=S[id];
-  cells.querySelectorAll('.cell').forEach(b=>b.classList.toggle('act',b.dataset.id===id));
+let cur='arch';
+function render(){
+  const s=S[cur];
+  cells.textContent='';
+  Object.keys(S).forEach(id=>{
+    const b=document.createElement('button');b.className='cell'+(id===cur?' act':'');
+    const sm=document.createElement('small');sm.textContent=tr(S[id].k);
+    b.append(sm,tr(S[id].v));
+    b.onclick=()=>{cur=id;render();cells.querySelector('.act').focus();};
+    cells.appendChild(b);
+  });
   detail.querySelectorAll('.dyn').forEach(n=>n.remove());
   const w=document.createElement('div');w.className='dyn';
-  w.innerHTML='<h3></h3>'+s.r.map(()=>'<div class="row"><span></span><span></span></div>').join('')+'<pre class="art"></pre>';
-  w.querySelector('h3').textContent='> '+s.t;
-  w.querySelectorAll('.row').forEach((row,i)=>{row.children[0].textContent=s.r[i][0];row.children[1].textContent=s.r[i][1];});
-  w.querySelector('pre').textContent=art;
+  const h=document.createElement('h3');h.textContent='> '+tr(s.t);w.appendChild(h);
+  s.r.forEach(([a,b])=>{
+    const row=document.createElement('div');row.className='row';
+    const x=document.createElement('span'),y=document.createElement('span');
+    x.textContent=tr(a);y.textContent=tr(b);row.append(x,y);w.appendChild(row);
+  });
+  const pre=document.createElement('pre');pre.className='art';pre.textContent=art;w.appendChild(pre);
   detail.appendChild(w);
 }
-Object.keys(S).forEach(id=>{
-  const b=document.createElement('button');b.className='cell';b.dataset.id=id;
-  const sm=document.createElement('small');sm.textContent=S[id].k;
-  b.append(sm,S[id].v);b.onclick=()=>show(id);cells.appendChild(b);
-});
-show('arch');
+onLang.push(render);
 
-// Terminal
 const out=document.getElementById('out'),inp=document.getElementById('inp');
 const hist=[];let hi=0;
 const say=(t,c)=>{const d=document.createElement('div');if(c)d.className=c;d.textContent=t;out.appendChild(d);out.scrollTop=out.scrollHeight;};
 const CMD={
-  help:()=>'Comandos disponibles:\n  help      lista de comandos\n  specs     resumen de oxp_notebook(1)\n  about     sobre OXP Code\n  whoami    usuario actual\n  date      fecha y hora\n  version   versión del sistema\n  clear     limpia la pantalla',
-  specs:()=>'oxp_notebook(1)\n  SoC .......... OXP-A8 octa-core ARM64\n  RAM .......... 16 GB LPDDR5\n  Disco ........ 512 GB NVMe\n  SO ........... Linux / FreeBSD\n  Chasis ....... PMMA transparente 4 mm\n  Matriz LED ... 24×8 monocroma',
-  about:()=>'OXP Code Systems diseña hardware abierto y arquitectura móvil.\nEsquemas, firmware y drivers son públicos. Si no puedes abrirlo, no es tuyo.',
-  whoami:()=>'guest@oxp-intranet (acceso de solo lectura)',
+  help:()=>L('Available commands:\n  help      list commands\n  specs     oxp_notebook(1) summary\n  about     about OXP Code\n  whoami    current user\n  date      date and time\n  version   system version\n  clear     clear the screen','Comandos disponibles:\n  help      lista de comandos\n  specs     resumen de oxp_notebook(1)\n  about     sobre OXP Code\n  whoami    usuario actual\n  date      fecha y hora\n  version   versión del sistema\n  clear     limpia la pantalla'),
+  specs:()=>L('oxp_notebook(1)\n  SoC .......... OXP-A8 octa-core ARM64\n  RAM .......... 16 GB LPDDR5\n  Disk ......... 512 GB NVMe\n  OS ........... Linux / FreeBSD\n  Chassis ...... clear PMMA 4 mm\n  LED matrix ... 24×8 monochrome','oxp_notebook(1)\n  SoC .......... OXP-A8 octa-core ARM64\n  RAM .......... 16 GB LPDDR5\n  Disco ........ 512 GB NVMe\n  SO ........... Linux / FreeBSD\n  Chasis ....... PMMA transparente 4 mm\n  Matriz LED ... 24×8 monocroma'),
+  about:()=>L('OXP Code Systems designs open hardware and mobile architecture.\nSchematics, firmware and drivers are public. If you cannot open it, it is not yours.','OXP Code Systems diseña hardware abierto y arquitectura móvil.\nEsquemas, firmware y drivers son públicos. Si no puedes abrirlo, no es tuyo.'),
+  whoami:()=>L('guest@oxp-intranet (read-only access)','guest@oxp-intranet (acceso de solo lectura)'),
   date:()=>new Date().toString(),
-  version:()=>'OXP Intranet v1.0.4 · build estable',
+  version:()=>L('OXP Intranet v1.0.4 · stable build','OXP Intranet v1.0.4 · build estable'),
   clear:()=>{out.textContent='';return null;}
 };
 function run(raw){
@@ -243,7 +249,7 @@ function run(raw){
   if(!c)return;
   hist.push(raw);hi=hist.length;
   if(CMD[c]){const r=CMD[c]();if(r)say(r);}
-  else say('comando no encontrado: '+c+'. Escribe help para ver la lista.');
+  else say(L('command not found: '+c+'. Type help for the list.','comando no encontrado: '+c+'. Escribe help para ver la lista.'));
 }
 inp.addEventListener('keydown',e=>{
   if(e.key==='Enter'){run(inp.value);inp.value='';}
@@ -251,7 +257,14 @@ inp.addEventListener('keydown',e=>{
   else if(e.key==='ArrowDown'&&hist.length){hi=Math.min(hist.length,hi+1);inp.value=hist[hi]||'';e.preventDefault();}
 });
 out.onclick=()=>inp.focus();
-say('OXP Intranet v1.0.4 — sesión iniciada.\nEscribe help para empezar.');
+onLang.push(()=>{
+  inp.setAttribute('aria-label',L('Command','Comando'));
+  document.getElementById('lang').setAttribute('aria-label',L('Change language','Cambiar idioma'));
+  document.getElementById('mx1').setAttribute('aria-label',L('LED matrix showing OXP CODE','Matriz LED mostrando OXP CODE'));
+  document.getElementById('mx2').setAttribute('aria-label',L('Visit counter','Contador de visitas'));
+});
+say(L('OXP Intranet v1.0.4 — session started.\nType help to begin.','OXP Intranet v1.0.4 — sesión iniciada.\nEscribe help para empezar.'));
+setLang('en');
 </script>
 </body>
 </html>
